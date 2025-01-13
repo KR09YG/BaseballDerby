@@ -70,3 +70,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+.vsconfig
+Assets/Alpha_Body_MAT.mat
+Assets/Alpha_Body_MAT.mat.meta
+Assets/Alpha_Joints_MAT.mat
+Assets/Alpha_Joints_MAT.mat.meta
