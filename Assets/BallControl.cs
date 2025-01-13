@@ -28,8 +28,7 @@ public class BallControl : MonoBehaviour
     void Start()
     {
         _target = GameObject.FindWithTag("Target").GetComponent<Transform>();
-        _orbit = FindAnyObjectByType<Orbit>();
-        _orbit.enabled = false;
+        _orbit = GetComponent<Orbit>();
         _rb = GetComponent<Rigidbody>();
         //_rb.AddForce(transform.up * -_gravity, ForceMode.Impulse);
         Vector3 targetDis = (_target.position - this.transform.position).normalized;
@@ -67,8 +66,6 @@ public class BallControl : MonoBehaviour
         contact = collision.GetContact(0);
         if (collision.gameObject.CompareTag("Bat"))
         {
-            _rb.angularVelocity = Vector3.zero;
-            _rb.velocity = Vector3.zero;
             _orbit.enabled = true;
             this.enabled = false;
         }

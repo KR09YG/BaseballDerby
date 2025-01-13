@@ -75,3 +75,57 @@ Assets/Alpha_Body_MAT.mat
 Assets/Alpha_Body_MAT.mat.meta
 Assets/Alpha_Joints_MAT.mat
 Assets/Alpha_Joints_MAT.mat.meta
+Packages/packages-lock.json
+ProjectSettings/AudioManager.asset
+ProjectSettings/ClusterInputManager.asset
+ProjectSettings/DynamicsManager.asset
+ProjectSettings/EditorBuildSettings.asset
+ProjectSettings/EditorSettings.asset
+ProjectSettings/GraphicsSettings.asset
+ProjectSettings/InputManager.asset
+ProjectSettings/MemorySettings.asset
+ProjectSettings/NavMeshAreas.asset
+ProjectSettings/PackageManagerSettings.asset
+ProjectSettings/Physics2DSettings.asset
+ProjectSettings/PresetManager.asset
+ProjectSettings/ProjectSettings.asset
+ProjectSettings/ProjectVersion.txt
+ProjectSettings/QualitySettings.asset
+ProjectSettings/SceneTemplateSettings.json
+ProjectSettings/TagManager.asset
+ProjectSettings/TimeManager.asset
+ProjectSettings/UnityConnectSettings.asset
+ProjectSettings/VersionControlSettings.asset
+ProjectSettings/VFXManager.asset
+ProjectSettings/XRSettings.asset
+ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
+Assets/material/blue.mat
+Assets/material/blue.mat.meta
+Assets/material/Co.mat
+Assets/material/Co.mat.meta
+Assets/material/ground.mat
+Assets/material/ground.mat.meta
+Assets/material/leg.mat
+Assets/material/leg.mat.meta
+Assets/material/light.mat
+Assets/material/light.mat.meta
+Assets/material/metal.mat
+Assets/material/metal.mat.meta
+Assets/material/net.mat
+Assets/material/net.mat.meta
+Assets/material/pole.mat
+Assets/material/pole.mat.meta
+Assets/material/seat.mat
+Assets/material/seat.mat.meta
+Assets/material/white line.mat
+Assets/material/white line.mat.meta
+Assets/tex ground.png
+Assets/tex ground.png.meta
+Assets/tex net.png
+Assets/tex net.png.meta
+Assets/Y Bot.fbx
+Assets/Y Bot.fbx.meta
+Assets/plaster_grey_04_diff_1k.png
+Assets/plaster_grey_04_diff_1k.png.meta
+Assets/plaster_grey_04_nor_gl_1k.png
+Assets/plaster_grey_04_nor_gl_1k.png.meta
