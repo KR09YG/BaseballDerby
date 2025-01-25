@@ -11,7 +11,7 @@ public class BallControl : MonoBehaviour
     [SerializeField] Vector3 _gravity;
     Orbit _orbit;
     Rigidbody _rb;
-    public int n;
+    int n;
 
     public enum Balltype
     {
@@ -30,6 +30,7 @@ public class BallControl : MonoBehaviour
         _target = GameObject.FindWithTag("Target").GetComponent<Transform>();
         _orbit = GetComponent<Orbit>();
         _rb = GetComponent<Rigidbody>();
+        n = Random.Range(0, 7);
         //_rb.AddForce(transform.up * -_gravity, ForceMode.Impulse);
         Vector3 targetDis = (_target.position - this.transform.position).normalized;
         switch (n)
@@ -58,15 +59,19 @@ public class BallControl : MonoBehaviour
             case 7:
                 _rb.AddForce(targetDis * _ballSpeed[7], ForceMode.Impulse);
                 break;
-        }
-        _rb.AddForce(_gravity, ForceMode.Impulse);
+        }       
+    }
+
+    private void FixedUpdate()
+    {
+        _rb.AddForce(new Vector3(0, 9.8f, 0));
     }
     private void OnCollisionEnter(Collision collision)
     {
-        contact = collision.GetContact(0);
         if (collision.gameObject.CompareTag("Bat"))
         {
-            _orbit.enabled = true;
+            _rb.velocity = Vector3.zero;
+            //_orbit.enabled = true;
             this.enabled = false;
         }
     }
@@ -76,27 +81,27 @@ public class BallControl : MonoBehaviour
         {
             if (n == 2)
             {
-                StartCoroutine(Change(0.025f, new Vector3(1f, 0, 0)));
+                StartCoroutine(Change(3f, new Vector3(-1f, 0, 0)));
             }//スライダー
             else if (n == 3)
             {
-                StartCoroutine(Change(0.015f, new Vector3(1f, 0, 0)));
+                StartCoroutine(Change(1.5f, new Vector3(-1f, 0, 0)));
             }//カットボール
             else if (n == 4)
             {
-                StartCoroutine(Change(0.025f, new Vector3(0, -1f, 0)));
+                StartCoroutine(Change(0.5f, new Vector3(0, -1f, 0)));
             }//フォークボール
             else if (n == 5)
             {
-                StartCoroutine(Change(0.025f, new Vector3(-1f, 0, 0)));
+                StartCoroutine(Change(1.5f, new Vector3(1f, 0, 0)));
             }//シュートボール
             else if (n == 6)
             {
-                StartCoroutine(Change(0.025f, new Vector3(2f, -1f, 0)));
+                StartCoroutine(Change(1.5f, new Vector3(-1f, -0.5f, 0)));
             }//カーブボール
             else if (n == 7)
             {
-                StartCoroutine(Change(0.025f, new Vector3(-1.5f, -0.7f, 0)));
+                StartCoroutine(Change(1.5f, new Vector3(1.5f, -0.7f, 0)));
             }//スプリット
         }
     }
