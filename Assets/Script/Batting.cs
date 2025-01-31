@@ -9,6 +9,7 @@ public class Batting : MonoBehaviour
     [SerializeField] Vector3 _size = Vector3.one;
     [SerializeField] LayerMask _meetareaLayer = default;
     [SerializeField] LayerMask _baseballLayer = default;
+    float _power = 10;
     Rigidbody _rbBall;
     Vector3 _center = default;
 
@@ -35,18 +36,11 @@ public class Batting : MonoBehaviour
 
                 reflection.z = 5f;
 
-                if (c.transform.position.z > _center.z + 0.1f)
+                reflection.x = Random.Range(-5,5);
+
+                if (reflection.x == 0)
                 {
-                    reflection.x = Random.Range(-3,-1);
-                }
-                else if (c.transform.position.z < _center.z - 0.1f)
-                {
-                    reflection.x = Random.Range(0.1f,1f );
-                    reflection.z *= 1.5f;
-                }
-                else
-                {
-                    reflection.z *= 1.5f;
+                    _power += 1.5f;
                 }
 
                 reflection.y = c.transform.position.y > _center.y ? 3f : -1f;
@@ -56,12 +50,14 @@ public class Batting : MonoBehaviour
 
                 Debug.Log(reflection);
 
-                _rbBall.AddForce(reflection * 8, ForceMode.Impulse);
+                _rbBall.AddForce(reflection * _power, ForceMode.Impulse);
+
+                _power = 10;
             }
         }
         if (_rbBall != null)
         {
-            _rbBall.AddForce(new Vector3(0, -1f, 0));
+            _rbBall.AddForce(new Vector3(0, -1.5f, 0));
         }
     }
     void OnDrawGizmos()
