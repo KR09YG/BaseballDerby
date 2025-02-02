@@ -38,7 +38,7 @@ public class Batting : MonoBehaviour
 
                 reflection.x = Random.Range(-5,5);
 
-                if (reflection.x == 0)
+                if (-1<= reflection.x && reflection.x <= 1)
                 {
                     _power += 1.5f;
                 }
