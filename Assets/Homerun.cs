@@ -7,6 +7,10 @@ public class Homerun : MonoBehaviour
 {
     [SerializeField] Text _homerunTex;
 
+    [SerializeField] Text _result;
+
+    static int _homerunCount = 0;
+
     Pitcher _pitch;
 
     private void Awake()
@@ -18,6 +22,8 @@ public class Homerun : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
+            _homerunCount++;
+            _result.text = _homerunCount.ToString();
             Debug.Log("Homerun");
             _pitch.Pitch.Invoke();
             Destroy(collision.gameObject);
