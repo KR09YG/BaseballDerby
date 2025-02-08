@@ -13,24 +13,12 @@ public class BallControl : MonoBehaviour
     Rigidbody _rb;
     int n;
 
-    public enum Balltype
-    {
-        Straight,
-        ChangeUp,
-        Slider,
-        Chute,
-        Fork,
-        Curve,
-        Split
-    }
-
-
     void Start()
     {
         _target = GameObject.FindWithTag("Target").GetComponent<Transform>();
         _orbit = GetComponent<Orbit>();
         _rb = GetComponent<Rigidbody>();
-        n = Random.Range(0, 7);
+        n = Random.Range(0, 8);
         //_rb.AddForce(transform.up * -_gravity, ForceMode.Impulse);
         Vector3 targetDis = (_target.position - this.transform.position).normalized;
         switch (n)
@@ -71,7 +59,6 @@ public class BallControl : MonoBehaviour
         if (collision.gameObject.CompareTag("Bat"))
         {
             _rb.velocity = Vector3.zero;
-            //_orbit.enabled = true;
             this.enabled = false;
         }
     }
@@ -82,26 +69,32 @@ public class BallControl : MonoBehaviour
             if (n == 2)
             {
                 StartCoroutine(Change(3f, new Vector3(-1f, 0, 0)));
+                Debug.Log("スライダー");
             }//スライダー
             else if (n == 3)
             {
-                StartCoroutine(Change(1.5f, new Vector3(-1f, 0, 0)));
+                StartCoroutine(Change(1f, new Vector3(-1f, 0, 0)));
+                Debug.Log("カット");
             }//カットボール
             else if (n == 4)
             {
-                StartCoroutine(Change(0.5f, new Vector3(0, -1f, 0)));
+                StartCoroutine(Change(1.5f, new Vector3(0, -1f, 0)));               
+                Debug.Log("フォーク");
             }//フォークボール
             else if (n == 5)
             {
-                StartCoroutine(Change(1.5f, new Vector3(1f, 0, 0)));
+                StartCoroutine(Change(1f, new Vector3(1f, 0, 0)));
+                Debug.Log("シュート");
             }//シュートボール
             else if (n == 6)
             {
-                StartCoroutine(Change(1.5f, new Vector3(-1f, -0.5f, 0)));
+                StartCoroutine(Change(1.5f, new Vector3(-1f, -1f, 0)));
+                Debug.Log("カーブ");
             }//カーブボール
             else if (n == 7)
             {
                 StartCoroutine(Change(1.5f, new Vector3(1.5f, -0.7f, 0)));
+                Debug.Log("スプリット");
             }//スプリット
         }
     }

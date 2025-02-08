@@ -12,7 +12,9 @@ public class Pitcher : MonoBehaviour
     [SerializeField] GameObject _ballImageObj;
     [SerializeField] Image[] _remainingImg;
     [SerializeField] GameObject _resultPanel;
+    [SerializeField] GameObject _pausePanel;
     [SerializeField] int _remaingCount;
+    bool _isPause = false;
     public Action Pitch;
 
     private void Awake()
@@ -24,16 +26,34 @@ public class Pitcher : MonoBehaviour
 
     private void Pitching()
     {
-        if (_remaingCount == 0)
+        if (!_isPause)
         {
-            _resultPanel.SetActive(true);
+            if (_remaingCount == 0)
+            {
+                _resultPanel.SetActive(true);
+            }
+            else
+            {
+                this.transform.position = new Vector3(0, 0.77f, 32.87f);
+                StartCoroutine(Release(2.02f, 3f));
+                Debug.Log("Pitching");
+            }
         }
         else
         {
-            this.transform.position = new Vector3(0, 0.77f, 32.87f);
-            StartCoroutine(Release(2.02f, 3f));
-            Debug.Log("Pitching");
+            _pausePanel.SetActive(true);
         }
+    }
+
+    public void Pause()
+    {
+        _isPause = true;
+    }
+
+    public void RePause()
+    {
+        _isPause = false;
+        Pitching();
     }
 
     IEnumerator Release(float time, float waitTime)
