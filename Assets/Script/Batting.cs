@@ -10,8 +10,10 @@ public class Batting : MonoBehaviour
     [SerializeField] LayerMask _meetareaLayer = default;
     [SerializeField] LayerMask _baseballLayer = default;
     float _power = 10;
+    bool _isSwing = false;
     Rigidbody _rbBall;
     Vector3 _center = default;
+    public Vector3 Cursor { get;private set; }
 
     void Update()
     {
@@ -21,11 +23,14 @@ public class Batting : MonoBehaviour
         {
             _cursor.rectTransform.position = Input.mousePosition;
             _center = hitInfo.point;
-
+            Cursor = _center;
+            _center.z += 4;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !_isSwing)
         {
+            _isSwing = true;
+            StartCoroutine(SwingInterval());
             var cols = Physics.OverlapBox(_center, _size, Quaternion.identity, _baseballLayer);
 
             foreach (var c in cols)
@@ -49,7 +54,7 @@ public class Batting : MonoBehaviour
                 _rbBall.velocity = Vector3.zero;
 
                 Debug.Log(reflection);
-
+                
                 _rbBall.AddForce(reflection * _power, ForceMode.Impulse);
 
                 _power = 10;
@@ -60,6 +65,13 @@ public class Batting : MonoBehaviour
             _rbBall.AddForce(new Vector3(0, -1.5f, 0));
         }
     }
+
+    IEnumerator SwingInterval()
+    {
+        yield return new WaitForSeconds(1);
+        _isSwing = false;
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(_center, _size);
