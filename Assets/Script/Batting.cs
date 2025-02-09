@@ -30,12 +30,14 @@ public class Batting : MonoBehaviour
             Cursor = _center;
             _center.z += 4;
         }
-        var cols = Physics.OverlapBox(_center, _size, Quaternion.identity, _baseballLayer);
 
         if (_isSupport)
         {
+            var supportCenter = _center;
+            supportCenter.z = _center.z + 1;
+            var s = Physics.OverlapBox(supportCenter, _size, Quaternion.identity, _baseballLayer);
             _supportButtonImage.color = Color.red;
-            foreach (var c in cols)
+            foreach (var c in s)
             {
                 c.GetComponent<MeshRenderer>().material = _supportMaterial;
             }
@@ -44,6 +46,8 @@ public class Batting : MonoBehaviour
         {
             _supportButtonImage.color = Color.white;
         }
+
+        var cols = Physics.OverlapBox(_center, _size, Quaternion.identity, _baseballLayer);
 
         if (Input.GetMouseButtonDown(0) && !_isSwing)
         {
@@ -54,7 +58,7 @@ public class Batting : MonoBehaviour
             {
                 _rbBall = c.GetComponent<Rigidbody>();
 
-                c.GetComponent<MeshRenderer>().material = _defaultMaterial;
+                c.GetComponent<TrailRenderer>().enabled = true;
 
                 Vector3 reflection = Vector3.zero;
 
