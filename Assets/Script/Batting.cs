@@ -5,15 +5,19 @@ using UnityEngine.UI;
 
 public class Batting : MonoBehaviour
 {
-    [SerializeField] Image _cursor = default;
-    [SerializeField] Vector3 _size = Vector3.one;
-    [SerializeField] LayerMask _meetareaLayer = default;
-    [SerializeField] LayerMask _baseballLayer = default;
+    [SerializeField] Image _cursor;
+    [SerializeField] Vector3 _size;
+    [SerializeField] LayerMask _meetareaLayer;
+    [SerializeField] LayerMask _baseballLayer;
+    [SerializeField] Material _supportMaterial;
+    [SerializeField] Material _defaultMaterial;
+    [SerializeField] Image _supportButtonImage;
     float _power = 10;
     bool _isSwing = false;
+    bool _isSupport = false;
     Rigidbody _rbBall;
-    Vector3 _center = default;
-    public Vector3 Cursor { get;private set; }
+    Vector3 _center;
+    public Vector3 Cursor { get; private set; }
 
     void Update()
     {
@@ -26,24 +30,39 @@ public class Batting : MonoBehaviour
             Cursor = _center;
             _center.z += 4;
         }
+        var cols = Physics.OverlapBox(_center, _size, Quaternion.identity, _baseballLayer);
+
+        if (_isSupport)
+        {
+            _supportButtonImage.color = Color.red;
+            foreach (var c in cols)
+            {
+                c.GetComponent<MeshRenderer>().material = _supportMaterial;
+            }
+        }
+        else
+        {
+            _supportButtonImage.color = Color.white;
+        }
 
         if (Input.GetMouseButtonDown(0) && !_isSwing)
         {
             _isSwing = true;
             StartCoroutine(SwingInterval());
-            var cols = Physics.OverlapBox(_center, _size, Quaternion.identity, _baseballLayer);
 
             foreach (var c in cols)
             {
                 _rbBall = c.GetComponent<Rigidbody>();
 
+                c.GetComponent<MeshRenderer>().material = _defaultMaterial;
+
                 Vector3 reflection = Vector3.zero;
 
                 reflection.z = 5f;
 
-                reflection.x = Random.Range(-5,5);
+                reflection.x = Random.Range(-5, 5);
 
-                if (-1<= reflection.x && reflection.x <= 1)
+                if (-1 <= reflection.x && reflection.x <= 1)
                 {
                     _power += 1.5f;
                 }
@@ -54,16 +73,22 @@ public class Batting : MonoBehaviour
                 _rbBall.velocity = Vector3.zero;
 
                 Debug.Log(reflection);
-                
+
                 _rbBall.AddForce(reflection * _power, ForceMode.Impulse);
 
                 _power = 10;
             }
         }
+
         if (_rbBall != null)
         {
             _rbBall.AddForce(new Vector3(0, -1.5f, 0));
         }
+    }
+
+    public void Support()
+    {
+        _isSupport = !_isSupport;
     }
 
     IEnumerator SwingInterval()
