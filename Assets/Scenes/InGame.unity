@@ -1698,7 +1698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cursor: {fileID: 185996146}
-  _size: {x: 2, y: 2, z: 2}
+  _size: {x: 1, y: 1, z: 1}
   _meetareaLayer:
     serializedVersion: 2
     m_Bits: 8
