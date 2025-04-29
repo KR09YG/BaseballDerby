@@ -12,7 +12,8 @@ public class Batting : MonoBehaviour
     [SerializeField] Material _supportMaterial;
     [SerializeField] Material _defaultMaterial;
     [SerializeField] Image _supportButtonImage;
-    float _power = 10;
+    [SerializeField] AudioSource[] _battingSe;
+    float _power = 11;
     bool _isSwing = false;
     bool _isSupport = false;
     Rigidbody _rbBall;
@@ -28,30 +29,48 @@ public class Batting : MonoBehaviour
             _cursor.rectTransform.position = Input.mousePosition;
             _center = hitInfo.point;
             Cursor = _center;
-            _center.z += 4;
         }
 
-        if (_isSupport)
+        //if (_isSupport)
+        //{
+        //    var supportCenter = _center;
+        //    supportCenter.z = _center.z + 4;
+        //    var s = Physics.OverlapBox(supportCenter, _size * 1.1f, Quaternion.identity, _baseballLayer);
+        //    _supportButtonImage.color = Color.red;
+        //    foreach (var c in s)
+        //    {
+        //        c.GetComponent<MeshRenderer>().material = _supportMaterial;
+        //    }
+        //}
+        //else
+        //{
+        //    _supportButtonImage.color = Color.white;
+        //}
+
+
+    }
+
+    public void StartSwing()
+    {
+        _isSwing = true;
+    }
+
+    public void FinishSwing()
+    {
+        _isSwing = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (_rbBall)
         {
-            var supportCenter = _center;
-            supportCenter.z = _center.z + 1;
-            var s = Physics.OverlapBox(supportCenter, _size, Quaternion.identity, _baseballLayer);
-            _supportButtonImage.color = Color.red;
-            foreach (var c in s)
-            {
-                c.GetComponent<MeshRenderer>().material = _supportMaterial;
-            }
-        }
-        else
-        {
-            _supportButtonImage.color = Color.white;
+            _rbBall.AddForce(new Vector3(0, -9.8f * 1.2f, 0));
         }
 
-        var cols = Physics.OverlapBox(_center, _size, Quaternion.identity, _baseballLayer);
-
-        if (Input.GetMouseButtonDown(0) && !_isSwing)
+        if (_isSwing)
         {
-            _isSwing = true;
+            var cols = Physics.OverlapBox(_center, _size, Quaternion.identity, _baseballLayer);
+
             StartCoroutine(SwingInterval());
 
             foreach (var c in cols)
@@ -68,11 +87,10 @@ public class Batting : MonoBehaviour
 
                 if (-1 <= reflection.x && reflection.x <= 1)
                 {
-                    _power += 1.5f;
+                    _power += 2f;
                 }
 
-                reflection.y = c.transform.position.y > _center.y ? 3f : -1f;
-
+                reflection.y = c.transform.position.y > _center.y ? 2f : -1f;
 
                 _rbBall.velocity = Vector3.zero;
 
@@ -80,13 +98,12 @@ public class Batting : MonoBehaviour
 
                 _rbBall.AddForce(reflection * _power, ForceMode.Impulse);
 
-                _power = 10;
-            }
-        }
+                _battingSe[Random.Range(0, 3)].Play();
 
-        if (_rbBall != null)
-        {
-            _rbBall.AddForce(new Vector3(0, -1.5f, 0));
+                _power = 11;
+
+                _isSwing = false;
+            }
         }
     }
 

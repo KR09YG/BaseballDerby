@@ -5,16 +5,19 @@ using UnityEngine.UI;
 
 public class Homerun : MonoBehaviour
 {
-    [SerializeField] Text _homerunTex;
+    [SerializeField] GameObject _homerunTex;
 
     [SerializeField] Text _result;
 
-    static int _homerunCount = 0;
+    [SerializeField] AudioSource _cheeringSe;
 
     Pitcher _pitch;
 
+    PointManager _pointManager;
+
     private void Awake()
     {
+        _pointManager = FindAnyObjectByType<PointManager>();
         _pitch = FindAnyObjectByType<Pitcher>();
     }
 
@@ -22,12 +25,12 @@ public class Homerun : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
-            _homerunCount++;
-            _result.text = _homerunCount.ToString();
+            _pointManager.PointUp(1);
+            _cheeringSe.Play();
             Debug.Log("Homerun");
             _pitch.Pitch.Invoke();
+            _homerunTex.SetActive(true);
             Destroy(collision.gameObject);
-            //_homerunTex.text = "Homerun";
         }
     }
 }

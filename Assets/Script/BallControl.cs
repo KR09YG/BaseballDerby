@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BallControl : MonoBehaviour
@@ -8,52 +6,62 @@ public class BallControl : MonoBehaviour
     Transform _target;
     public ContactPoint contact;
     [SerializeField] float[] _ballSpeed;
-    [SerializeField] Vector3 _gravity;
     Orbit _orbit;
     Rigidbody _rb;
+    Vector3 _distance;
     int n;
 
     void Start()
     {
         _target = GameObject.FindWithTag("Target").GetComponent<Transform>();
+        _distance = this.transform.position - _target.position;
         _orbit = GetComponent<Orbit>();
         _rb = GetComponent<Rigidbody>();
         n = Random.Range(0, 8);
-        //_rb.AddForce(transform.up * -_gravity, ForceMode.Impulse);
         Vector3 targetDis = (_target.position - this.transform.position).normalized;
         switch (n)
         {
             case 0:
                 _rb.AddForce(targetDis * _ballSpeed[0], ForceMode.Impulse);
+                Debug.Log("ストレート");
                 break;
             case 1:
                 _rb.AddForce(targetDis * _ballSpeed[1], ForceMode.Impulse);
+                Debug.Log("チェンジアップ");
                 break;
             case 2:
                 _rb.AddForce(targetDis * _ballSpeed[2], ForceMode.Impulse);
+                StartCoroutine(Change(3f, new Vector3(-1f, 0, 0)));
+                Debug.Log("スライダー");
                 break;
             case 3:
                 _rb.AddForce(targetDis * _ballSpeed[3], ForceMode.Impulse);
+                StartCoroutine(Change(1f, new Vector3(-1f, 0, 0)));
+                Debug.Log("カット");
                 break;
             case 4:
                 _rb.AddForce(targetDis * _ballSpeed[4], ForceMode.Impulse);
+                StartCoroutine(Change(1.5f, new Vector3(0, -1f, 0)));
+                Debug.Log("フォーク");
                 break;
             case 5:
                 _rb.AddForce(targetDis * _ballSpeed[5], ForceMode.Impulse);
+                StartCoroutine(Change(1f, new Vector3(1f, 0, 0)));
+                Debug.Log("シュート");
                 break;
             case 6:
                 _rb.AddForce(targetDis * _ballSpeed[6], ForceMode.Impulse);
+                StartCoroutine(Change(1.5f, new Vector3(-1f, -1f, 0)));
+                Debug.Log("カーブ");
                 break;
             case 7:
                 _rb.AddForce(targetDis * _ballSpeed[7], ForceMode.Impulse);
+                StartCoroutine(Change(1.5f, new Vector3(1.5f, -0.7f, 0)));
+                Debug.Log("スプリット");
                 break;
         }       
     }
 
-    private void FixedUpdate()
-    {
-        _rb.AddForce(new Vector3(0, 9.8f, 0));
-    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bat"))
@@ -62,45 +70,7 @@ public class BallControl : MonoBehaviour
             this.enabled = false;
         }
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Change"))
-        {
-            if (n == 2)
-            {
-                StartCoroutine(Change(3f, new Vector3(-1f, 0, 0)));
-                Debug.Log("スライダー");
-            }//スライダー
-            else if (n == 3)
-            {
-                StartCoroutine(Change(1f, new Vector3(-1f, 0, 0)));
-                Debug.Log("カット");
-            }//カットボール
-            else if (n == 4)
-            {
-                StartCoroutine(Change(1.5f, new Vector3(0, -1f, 0)));               
-                Debug.Log("フォーク");
-            }//フォークボール
-            else if (n == 5)
-            {
-                StartCoroutine(Change(1f, new Vector3(1f, 0, 0)));
-                Debug.Log("シュート");
-            }//シュートボール
-            else if (n == 6)
-            {
-                StartCoroutine(Change(1.5f, new Vector3(-1f, -1f, 0)));
-                Debug.Log("カーブ");
-            }//カーブボール
-            else if (n == 7)
-            {
-                StartCoroutine(Change(1.5f, new Vector3(1.5f, -0.7f, 0)));
-                Debug.Log("スプリット");
-            }//スプリット
-        }
-    }
-
     
-
     /// <summary>
     /// 変化球の処理
     /// </summary>
@@ -108,10 +78,13 @@ public class BallControl : MonoBehaviour
     /// <param 変化する方向　=　"changingDirection"></param>
     IEnumerator Change(float n, Vector3 changingDirection)
     {
+        _distance /= 2;
+        Debug.Log(_distance);
         while (true)
         {
             _rb.AddForce(changingDirection * n);
             yield return new WaitForSeconds(0.1f);
         }
+       
     }
 }

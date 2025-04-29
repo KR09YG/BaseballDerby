@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SwingMotion : MonoBehaviour
 {
+    [SerializeField] AudioSource _swingSe;
     Animator _animator;
     Batting _batting;
     bool _isSwing = false;
@@ -17,6 +18,7 @@ public class SwingMotion : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !_isSwing)
         {
             _isSwing = true;
+            _swingSe.Play();
             switch (_batting.Cursor.y)
             {
                 case <= 1.7f:
@@ -40,7 +42,7 @@ public class SwingMotion : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-        transform.position = new Vector3(-1.810188f, 2.384186e-07f, -0.27777f);
+        transform.position = new Vector3(-1.57f, 0f, -0.28f);
         yield return new WaitForSeconds(0.5f);
         _isSwing = false;
     }
